@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>icewhite</groupId>
+    <artifactId>velocity-cli</artifactId>
+    <version>1.0.4</version>
+
+    <name>Velocity Cli</name>
+    <url>https://github.com/yashiro1899/velocity.java</url>
+    <description>Apache Velocity is a general purpose template engine.</description>
+    <inceptionYear>2015</inceptionYear>
+    <packaging>jar</packaging>
+
+    <prerequisites>
+        <maven>2.0.9</maven>
+    </prerequisites>
+
+    <build>
+        <defaultGoal>install</defaultGoal>
+        <sourceDirectory>src</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>VelocityCli</mainClass>
+                                </transformer>
+                            </transformers>
+                            <minimizeJar>true</minimizeJar>
+                            <filters>
+                                <filter>
+                                    <artifact>org.apache.velocity</artifact>
+                                    <includes>
+                                        <include>**</include>
+                                    </includes>
+                                    <excludes>
+                                        <exclude>org/apache/velocity/anakia/**</exclude>
+                                        <exclude>org/apache/velocity/servlet/**</exclude>
+                                        <exclude>org/apache/velocity/texen/**</exclude>
+                                        <exclude>org/apache/velocity/tools/struts/**</exclude>
+                                        <exclude>org/apache/velocity/tools/view/jsp/**</exclude>
+                                        <exclude>org/apache/velocity/tools/view/servlet/**</exclude>
+                                    </excludes>
+                                </filter>
+                                <filter>
+                                    <artifact>commons-logging:commons-logging</artifact>
+                                    <includes>
+                                        <include>**</include>
+                                    </includes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <developers>
+        <developer>
+            <name>Ice White</name>
+            <id>icewhite</id>
+            <email>yashiro1899@gmail.com</email>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-tools</artifactId>
+            <version>2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.5.4</version>
+        </dependency>
+    </dependencies>
+</project>
