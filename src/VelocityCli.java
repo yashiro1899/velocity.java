@@ -111,21 +111,21 @@ public class VelocityCli {
     }
 
     public static void render(ObjectNode node, Writer writer) throws Exception {
-            if (!node.has(VJ_FILENAME)) {
-                throw new Exception("Must have \"" + VJ_FILENAME + "\" parameter!");
-            }
-            String filename = node.get(VJ_FILENAME).textValue();
-            node.remove(VJ_FILENAME);
+        if (!node.has(VJ_FILENAME)) {
+            throw new Exception("Must have \"" + VJ_FILENAME + "\" parameter!");
+        }
+        String filename = node.get(VJ_FILENAME).textValue();
+        node.remove(VJ_FILENAME);
 
-            Context context = new VelocityContext(baseContext);
-            Iterator<String> it = node.fieldNames();
+        Context context = new VelocityContext(baseContext);
+        Iterator<String> it = node.fieldNames();
 
-            for (; it.hasNext(); ) {
-                String field = (String)it.next();
-                context.put(field, convert(node.get(field)));
-            }
+        for (; it.hasNext(); ) {
+            String field = (String)it.next();
+            context.put(field, convert(node.get(field)));
+        }
 
-            engine.getTemplate(filename).merge(context, writer);
+        engine.getTemplate(filename).merge(context, writer);
     }
 
     public static void main(String[] args) throws Exception {
