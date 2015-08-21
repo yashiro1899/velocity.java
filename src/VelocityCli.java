@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
@@ -126,8 +125,7 @@ public class VelocityCli {
                 context.put(field, convert(node.get(field)));
             }
 
-            Template template = engine.getTemplate(filename);
-            template.merge(context, writer);
+            template = engine.getTemplate(filename).merge(context, writer);
     }
 
     public static void main(String[] args) throws Exception {
