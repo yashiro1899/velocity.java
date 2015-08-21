@@ -110,7 +110,7 @@ public class VelocityCli {
         return manager.createContext();
     }
 
-    public static void render(ObjectNode node, Writer writer) throws Exception {
+    public static String render(ObjectNode node, Writer writer) throws Exception {
         if (!node.has(VJ_FILENAME)) {
             throw new Exception("Must have \"" + VJ_FILENAME + "\" parameter!");
         }
@@ -125,7 +125,9 @@ public class VelocityCli {
             context.put(field, convert(node.get(field)));
         }
 
+        StringWriter writer = new StringWriter();
         engine.getTemplate(filename).merge(context, writer);
+        return writer.toString();
     }
 
     public static void main(String[] args) throws Exception {
@@ -140,9 +142,8 @@ public class VelocityCli {
                 loaderPath = System.getProperty("user.dir");
             }
 
-            Properties prop = createProperties();
             engine = new VelocityEngine();
-            engine.init(prop);
+            engine.init(createProperties());
             baseContext = createContext();
 
             if (node.has(VJ_SERVER_PORT)) {
@@ -154,12 +155,7 @@ public class VelocityCli {
                 return;
             }
 
-            String encoding = prop.getProperty("output.encoding", "UTF-8");
-            BufferedWriter writer = new BufferedWriter(
-                new OutputStreamWriter(System.out, encoding));
-            render(node, writer);
-            writer.flush();
-            writer.close();
+            System.out.println(render(node, writer));
         } else {
             System.err.println(
                 "Usage: java -jar velocity-cli.jar \\\n" +
