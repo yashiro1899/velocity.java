@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.runtime.RuntimeConstants;
@@ -26,6 +27,8 @@ public class VelocityCli {
     static final String VF_FILENAME    = "velocity.java.filename";
 
     private static String loaderPath;
+    private static VelocityEngine engine;
+    private static Context baseContext;
 
     private static Object convert(JsonNode node) {
         switch (node.getNodeType()) {
@@ -71,6 +74,7 @@ public class VelocityCli {
                 InputStream in = new BufferedInputStream(new FileInputStream(f));
                 prop.load(in);
             } catch(Exception e) {
+                // TODO:
                 System.err.println(e.getMessage());
                 System.exit(1);
             }
@@ -93,6 +97,7 @@ public class VelocityCli {
             try {
                 manager.configure(ConfigurationUtils.find(f.getCanonicalPath()));
             } catch(Exception e) {
+                // TODO:
                 System.err.println(e.getMessage());
                 System.exit(1);
             }
@@ -105,30 +110,15 @@ public class VelocityCli {
         return manager.createContext();
     }
 
-    public static void main(String[] args) throws Exception {
-        if (args.length > 0) {
-            ObjectMapper mapper = new ObjectMapper();
-            ObjectNode node = (ObjectNode)mapper.readTree(args[0]);
-
+    public static void render(ObjectNode node, Writer writer) {
             if (!node.has(VF_FILENAME)) {
                 System.err.println("Must have \"" + VF_FILENAME + "\" parameter!");
                 System.exit(1);
             }
             String filename = node.get(VF_FILENAME).textValue();
-
-            if (node.has(VF_LOADER_PATH)) {
-                loaderPath = node.get(VF_LOADER_PATH).textValue();
-                node.remove(VF_LOADER_PATH);
-            } else {
-                loaderPath = System.getProperty("user.dir");
-            }
             node.remove(VF_FILENAME);
 
-            VelocityEngine engine = new VelocityEngine();
-            Properties prop = createProperties();
-            engine.init(prop);
-
-            Context context = createContext();
+            Context context = new VelocityContext(baseContext);
             Iterator<String> it = node.fieldNames();
 
             for (; it.hasNext(); ) {
@@ -136,12 +126,32 @@ public class VelocityCli {
                 context.put(field, convert(node.get(field)));
             }
 
-            String encoding = prop.getProperty(VelocityEngine.OUTPUT_ENCODING, "UTF-8");
             Template template = engine.getTemplate(filename);
+            template.merge(context, writer);
+    }
+
+    public static void main(String[] args) throws Exception {
+        if (args.length > 0) {
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode node = (ObjectNode)mapper.readTree(args[0]);
+
+            if (node.has(VF_LOADER_PATH)) {
+                loaderPath = node.get(VF_LOADER_PATH).textValue();
+                node.remove(VF_LOADER_PATH);
+            } else {
+                loaderPath = System.getProperty("user.dir");
+            }
+
+            Properties prop = createProperties();
+            engine = new VelocityEngine();
+            engine.init(prop);
+
+            baseContext = createContext();
+
+            String encoding = prop.getProperty(VelocityEngine.OUTPUT_ENCODING, "UTF-8");
             BufferedWriter writer = new BufferedWriter(
                 new OutputStreamWriter(System.out, encoding));
-
-            template.merge(context, writer);
+            render(node, writer);
             writer.flush();
             writer.close();
         } else {

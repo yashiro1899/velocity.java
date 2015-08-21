@@ -1,6 +1,6 @@
 #!/bin/bash
 
-java -jar ../target/velocity-cli-1.0.?.jar \
+java -jar ../target/velocity-cli-1.?.?.jar \
 '
 {
     "velocity.java.loader.path": "'$(pwd)'",
