@@ -10,7 +10,6 @@ public class ServerHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        exchange.sendResponseHeaders(200, 0);
         OutputStream os = exchange.getResponseBody();
         InputStream is  = exchange.getRequestBody();
 
@@ -27,11 +26,12 @@ public class ServerHandler implements HttpHandler {
             ObjectNode node = (ObjectNode)mapper.readTree(json);
 
             res = VelocityCli.render(node);
+            exchange.sendResponseHeaders(200, 0);
         } catch(Exception e) {
-            res = "<!-- \"> -->";
-            res += "<pre>";
+            res = "<pre>";
             res += e.getMessage();
-            res += "</pre>";
+            res += "</pre>\n";
+            exchange.sendResponseHeaders(500, 0);
         } finally {
             os.write(res.getBytes());
             os.close();
