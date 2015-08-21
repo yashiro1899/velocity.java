@@ -18,6 +18,8 @@ import org.apache.velocity.tools.ToolManager;
 import org.apache.velocity.tools.config.ConfigurationUtils;
 import org.apache.velocity.tools.config.EasyFactoryConfiguration;
 
+import com.sun.net.httpserver.HttpExchange;
+
 public class VelocityCli {
 
     static final String VF_LOADER_PATH = "velocity.java.loader.path";
@@ -146,8 +148,8 @@ public class VelocityCli {
             System.err.println(
                 "Usage: java -jar velocity-cli.jar \\\n" +
                 "'\n{\n" +
-                "    \"velocity.java.loader.path\": \"/path/to/vm-basedir\"\n" +
-                "    \"velocity.java.filename\": \"vm-filename\"\n" +
+                "    \"velocity.java.loader.path\": \"/path/to/root\"\n" +
+                "    \"velocity.java.filename\": \"filename\"\n" +
                 "    \"data1\": \"...\"\n" +
                 "    \"data2\": \"...\"\n" +
                 "}'");
