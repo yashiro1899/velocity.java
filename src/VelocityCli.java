@@ -11,8 +11,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
-import org.apache.velocity.runtime.RuntimeConstants;
-import org.apache.velocity.runtime.log.NullLogChute;
 
 import org.apache.velocity.tools.ToolManager;
 import org.apache.velocity.tools.config.ConfigurationUtils;
@@ -78,12 +76,15 @@ public class VelocityCli {
                 System.exit(1);
             }
         } else {
-            prop.setProperty(VelocityEngine.INPUT_ENCODING, "UTF-8");
-            prop.setProperty(VelocityEngine.OUTPUT_ENCODING, "UTF-8");
-            prop.setProperty(VelocityEngine.RUNTIME_LOG_LOGSYSTEM_CLASS,
-                             NullLogChute.class.getName());
+            prop.setProperty("input.encoding", "UTF-8");
+            prop.setProperty("output.encoding", "UTF-8");
+            prop.setProperty("runtime.log.logsystem.class",
+                    "org.apache.velocity.runtime.log.NullLogChute");
+            prop.setProperty("file.resource.loader.cache", "true");
+            prop.setProperty("file.resource.loader.modificationCheckInterval", "2");
+            prop.setProperty("resource.manager.defaultcache.size", "0");
         }
-        prop.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, loaderPath);
+        prop.setProperty("file.resource.loader.path", loaderPath);
 
         return prop;
     }
@@ -125,7 +126,7 @@ public class VelocityCli {
                 context.put(field, convert(node.get(field)));
             }
 
-            template = engine.getTemplate(filename).merge(context, writer);
+            engine.getTemplate(filename).merge(context, writer);
     }
 
     public static void main(String[] args) throws Exception {
@@ -143,7 +144,6 @@ public class VelocityCli {
             Properties prop = createProperties();
             engine = new VelocityEngine();
             engine.init(prop);
-
             baseContext = createContext();
 
             String encoding = prop.getProperty(VelocityEngine.OUTPUT_ENCODING, "UTF-8");
