@@ -16,7 +16,8 @@ import org.apache.velocity.tools.ToolManager;
 import org.apache.velocity.tools.config.ConfigurationUtils;
 import org.apache.velocity.tools.config.EasyFactoryConfiguration;
 
-import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpServer;
+import java.net.InetSocketAddress;
 
 public class VelocityCli {
 
@@ -148,6 +149,11 @@ public class VelocityCli {
             baseContext = createContext();
 
             if (node.has(VJ_SERVER_PORT)) {
+                int port = node.get(VJ_SERVER_PORT).numberValue().intValue();
+                HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
+                server.createContext("/", new ServerHandler());
+                server.setExecutor(null);
+                server.start();
                 return;
             }
 
