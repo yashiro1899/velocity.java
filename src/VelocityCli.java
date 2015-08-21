@@ -150,7 +150,6 @@ public class VelocityCli {
                 int port = node.get(VJ_SERVER_PORT).numberValue().intValue();
                 HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
                 server.createContext("/", new ServerHandler());
-                server.setExecutor(null);
                 server.start();
                 return;
             }
