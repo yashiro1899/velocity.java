@@ -73,7 +73,6 @@ public class VelocityCli {
                 InputStream in = new BufferedInputStream(new FileInputStream(f));
                 prop.load(in);
             } catch(Exception e) {
-                // TODO:
                 System.err.println(e.getMessage());
                 System.exit(1);
             }
@@ -99,7 +98,6 @@ public class VelocityCli {
             try {
                 manager.configure(ConfigurationUtils.find(f.getCanonicalPath()));
             } catch(Exception e) {
-                // TODO:
                 System.err.println(e.getMessage());
                 System.exit(1);
             }
@@ -112,10 +110,9 @@ public class VelocityCli {
         return manager.createContext();
     }
 
-    public static void render(ObjectNode node, Writer writer) {
+    public static void render(ObjectNode node, Writer writer) throws Exception {
             if (!node.has(VJ_FILENAME)) {
-                System.err.println("Must have \"" + VJ_FILENAME + "\" parameter!");
-                System.exit(1);
+                throw new Exception("Must have \"" + VJ_FILENAME + "\" parameter!");
             }
             String filename = node.get(VJ_FILENAME).textValue();
             node.remove(VJ_FILENAME);
