@@ -157,7 +157,7 @@ public class VelocityCli {
                 return;
             }
 
-            String encoding = prop.getProperty(VelocityEngine.OUTPUT_ENCODING, "UTF-8");
+            String encoding = prop.getProperty("output.encoding", "UTF-8");
             BufferedWriter writer = new BufferedWriter(
                 new OutputStreamWriter(System.out, encoding));
             render(node, writer);
