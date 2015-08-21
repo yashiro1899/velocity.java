@@ -20,8 +20,9 @@ import com.sun.net.httpserver.HttpExchange;
 
 public class VelocityCli {
 
-    static final String VF_LOADER_PATH = "velocity.java.loader.path";
-    static final String VF_FILENAME    = "velocity.java.filename";
+    static final String VJ_SERVER_PORT = "velocity.java.server.port";
+    static final String VJ_LOADER_PATH = "velocity.java.loader.path";
+    static final String VJ_FILENAME    = "velocity.java.filename";
 
     private static String loaderPath;
     private static VelocityEngine engine;
@@ -111,12 +112,12 @@ public class VelocityCli {
     }
 
     public static void render(ObjectNode node, Writer writer) {
-            if (!node.has(VF_FILENAME)) {
-                System.err.println("Must have \"" + VF_FILENAME + "\" parameter!");
+            if (!node.has(VJ_FILENAME)) {
+                System.err.println("Must have \"" + VJ_FILENAME + "\" parameter!");
                 System.exit(1);
             }
-            String filename = node.get(VF_FILENAME).textValue();
-            node.remove(VF_FILENAME);
+            String filename = node.get(VJ_FILENAME).textValue();
+            node.remove(VJ_FILENAME);
 
             Context context = new VelocityContext(baseContext);
             Iterator<String> it = node.fieldNames();
@@ -134,9 +135,9 @@ public class VelocityCli {
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode node = (ObjectNode)mapper.readTree(args[0]);
 
-            if (node.has(VF_LOADER_PATH)) {
-                loaderPath = node.get(VF_LOADER_PATH).textValue();
-                node.remove(VF_LOADER_PATH);
+            if (node.has(VJ_LOADER_PATH)) {
+                loaderPath = node.get(VJ_LOADER_PATH).textValue();
+                node.remove(VJ_LOADER_PATH);
             } else {
                 loaderPath = System.getProperty("user.dir");
             }
@@ -145,6 +146,10 @@ public class VelocityCli {
             engine = new VelocityEngine();
             engine.init(prop);
             baseContext = createContext();
+
+            if (node.has(VJ_SERVER_PORT)) {
+                return;
+            }
 
             String encoding = prop.getProperty(VelocityEngine.OUTPUT_ENCODING, "UTF-8");
             BufferedWriter writer = new BufferedWriter(
