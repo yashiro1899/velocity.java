@@ -110,7 +110,7 @@ public class VelocityCli {
         return manager.createContext();
     }
 
-    public static String render(ObjectNode node, Writer writer) throws Exception {
+    public static String render(ObjectNode node) throws Exception {
         if (!node.has(VJ_FILENAME)) {
             throw new Exception("Must have \"" + VJ_FILENAME + "\" parameter!");
         }
@@ -155,7 +155,7 @@ public class VelocityCli {
                 return;
             }
 
-            System.out.println(render(node, writer));
+            System.out.println(render(node));
         } else {
             System.err.println(
                 "Usage: java -jar velocity-cli.jar \\\n" +

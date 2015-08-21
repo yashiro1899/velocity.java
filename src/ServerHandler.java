@@ -14,7 +14,7 @@ public class ServerHandler implements HttpHandler {
         OutputStream os = exchange.getResponseBody();
         InputStream is  = exchange.getRequestBody();
 
-        String res;
+        String res = "";
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             byte buf[] = new byte[4096];
@@ -26,7 +26,7 @@ public class ServerHandler implements HttpHandler {
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode node = (ObjectNode)mapper.readTree(json);
 
-            res = VelocityCli.render(node, writer);
+            res = VelocityCli.render(node);
         } catch(Exception e) {
             res = "<!-- \"> -->";
             res += "<pre>";
