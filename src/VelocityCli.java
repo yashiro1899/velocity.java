@@ -157,13 +157,13 @@ public class VelocityCli {
             System.out.println(render(node));
         } else {
             System.err.println(
-                "Usage: java -jar velocity-cli.jar \\\n" +
-                "'\n{\n" +
-                "    \"velocity.java.loader.path\": \"/path/to/root\"\n" +
-                "    \"velocity.java.filename\": \"filename\"\n" +
-                "    \"data1\": \"...\"\n" +
-                "    \"data2\": \"...\"\n" +
-                "}'");
+                    "Usage: java -jar velocity-cli.jar \\\n" +
+                    "'\n{\n" +
+                    "    \"velocity.java.loader.path\": \"/path/to/root\"\n" +
+                    "    \"velocity.java.filename\": \"filename\"\n" +
+                    "    \"data1\": \"...\"\n" +
+                    "    \"data2\": \"...\"\n" +
+                    "}'");
         }
     }
 }
