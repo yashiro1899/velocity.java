@@ -28,9 +28,8 @@ public class ServerHandler implements HttpHandler {
             res = VelocityCli.render(node);
             exchange.sendResponseHeaders(200, 0);
         } catch(Exception e) {
-            res = "<pre>";
-            res += e.getMessage();
-            res += "</pre>\n";
+            res = e.getMessage();
+            res += "\n";
             exchange.sendResponseHeaders(500, 0);
         } finally {
             os.write(res.getBytes());
