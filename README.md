@@ -46,3 +46,19 @@ where `data` is the buffer of the rendered template.
 * _filename_ String
 * _data_ Object
 * _callback_ Function
+
+Java startup time is often much slower,
+because a lot of classes must be loaded before being used.
+So, `velocity.java` provides one simple server to speed up rendering.
+`render` usually used after `startServer`. Example:
+
+    var velocity = require("velocity.java");
+    velocity.startServer(8000, "example/");
+    velocity.render("example.vm", {}, function(err, data) {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        console.log(data.toString());
+        velocity.stopServer();
+    });
