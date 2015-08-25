@@ -39,9 +39,13 @@ velocity.renderOnce("example.vm", {}, "example/", function(err, data) {
 The callback is passed two arguments `(err, data)`,
 where `data` is the buffer of the rendered template.
 
-### velocity.startServer([port][, root])
-* _port_ Number default = 12306
-* _root_ String | Array
+### velocity.startServer([options])
+* _options_ Object
+    * _port_ Number default = 12306
+    * _root_ String | Array
+    * _callback_ Function
+
+`callback`, test whether the JRE exists. Then call the `callback` argument with either true or false.
 
 ### velocity.stopServer()
 ### velocity.render(filename[, data], callback)
