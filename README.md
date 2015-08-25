@@ -22,6 +22,7 @@ Render the template specified by `filename` with `data`.
 `root` accepts multi-value.
 Root(s) from which the loader loads templates.
 Templates may live in subdirectories of this root.
+`filename` is the relative path to `root`.
 
 Example:
 
@@ -45,7 +46,7 @@ where `data` is the buffer of the rendered template.
     * _root_ String | Array
     * _callback_ Function
 
-`callback`, test whether the JRE exists. Then call the `callback` argument with either true or false.
+`options.callback`, test whether the JRE exists. Then call the `callback` argument with either true or false.
 
 ### velocity.stopServer()
 ### velocity.render(filename[, data], callback)
