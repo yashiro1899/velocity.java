@@ -25,14 +25,16 @@ Templates may live in subdirectories of this root.
 
 Example:
 
-    var velocity = require("velocity.java");
-    velocity.renderOnce("example.vm", {}, "example/", function(err, data) {
-        if (err) {
-            console.error(err);
-            return;
-        }
-        console.log(data.toString());
-    });
+```javascript
+var velocity = require("velocity.java");
+velocity.renderOnce("example.vm", {}, "example/", function(err, data) {
+    if (err) {
+        console.error(err);
+        return;
+    }
+    console.log(data.toString());
+});
+```
 
 The callback is passed two arguments `(err, data)`,
 where `data` is the buffer of the rendered template.
@@ -52,13 +54,15 @@ because a lot of classes must be loaded before being used.
 So, `velocity.java` provides one simple server to speed up rendering.
 `render` usually used after `startServer`. Example:
 
-    var velocity = require("velocity.java");
-    velocity.startServer(8000, "example/");
-    velocity.render("example.vm", {}, function(err, data) {
-        if (err) {
-            console.error(err);
-            return;
-        }
-        console.log(data.toString());
-        velocity.stopServer();
-    });
+```javascript
+var velocity = require("velocity.java");
+velocity.startServer(8000, "example/");
+velocity.render("example.vm", {}, function(err, data) {
+    if (err) {
+        console.error(err);
+        return;
+    }
+    console.log(data.toString());
+    velocity.stopServer();
+});
+```
