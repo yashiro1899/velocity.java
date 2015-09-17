@@ -38,47 +38,47 @@
                                     <mainClass>VelocityCli</mainClass>
                                 </transformer>
                             </transformers>
-                            <!-- <minimizeJar>true</minimizeJar> -->
-                            <!-- <filters> -->
-                            <!--     <filter> -->
-                            <!--         <artifact>org.apache.velocity</artifact> -->
-                            <!--         <includes> -->
-                            <!--             <include>**</include> -->
-                            <!--         </includes> -->
-                            <!--         <excludes> -->
-                            <!--             <exclude>org/apache/velocity/anakia/**</exclude> -->
-                            <!--             <exclude>org/apache/velocity/servlet/**</exclude> -->
-                            <!--             <exclude>org/apache/velocity/texen/**</exclude> -->
-                            <!--             <exclude>org/apache/velocity/tools/struts/**</exclude> -->
-                            <!--             <exclude>org/apache/velocity/tools/view/jsp/**</exclude> -->
-                            <!--             <exclude>org/apache/velocity/tools/view/servlet/**</exclude> -->
-                            <!--         </excludes> -->
-                            <!--     </filter> -->
-                            <!--     <filter> -->
-                            <!--         <artifact>commons-logging:commons-logging</artifact> -->
-                            <!--         <includes> -->
-                            <!--             <include>**</include> -->
-                            <!--         </includes> -->
-                            <!--     </filter> -->
-                            <!--     <filter> -->
-                            <!--         <artifact>commons-validator:commons-validator</artifact> -->
-                            <!--         <excludes> -->
-                            <!--             <exclude>**</exclude> -->
-                            <!--         </excludes> -->
-                            <!--     </filter> -->
-                            <!--     <filter> -->
-                            <!--         <artifact>org.apache.struts</artifact> -->
-                            <!--         <excludes> -->
-                            <!--             <exclude>**</exclude> -->
-                            <!--         </excludes> -->
-                            <!--     </filter> -->
-                            <!--     <filter> -->
-                            <!--         <artifact>javax.servlet</artifact> -->
-                            <!--         <excludes> -->
-                            <!--             <exclude>**</exclude> -->
-                            <!--         </excludes> -->
-                            <!--     </filter> -->
-                            <!-- </filters> -->
+                            <minimizeJar>true</minimizeJar>
+                            <filters>
+                                <filter>
+                                    <artifact>org.apache.velocity</artifact>
+                                    <includes>
+                                        <include>**</include>
+                                    </includes>
+                                    <excludes>
+                                        <exclude>org/apache/velocity/anakia/**</exclude>
+                                        <exclude>org/apache/velocity/servlet/**</exclude>
+                                        <exclude>org/apache/velocity/texen/**</exclude>
+                                        <exclude>org/apache/velocity/tools/struts/**</exclude>
+                                        <exclude>org/apache/velocity/tools/view/jsp/**</exclude>
+                                        <exclude>org/apache/velocity/tools/view/servlet/**</exclude>
+                                    </excludes>
+                                </filter>
+                                <filter>
+                                    <artifact>commons-logging:commons-logging</artifact>
+                                    <includes>
+                                        <include>**</include>
+                                    </includes>
+                                </filter>
+                                <filter>
+                                    <artifact>commons-validator:commons-validator</artifact>
+                                    <excludes>
+                                        <exclude>**</exclude>
+                                    </excludes>
+                                </filter>
+                                <filter>
+                                    <artifact>org.apache.struts</artifact>
+                                    <excludes>
+                                        <exclude>**</exclude>
+                                    </excludes>
+                                </filter>
+                                <filter>
+                                    <artifact>javax.servlet</artifact>
+                                    <excludes>
+                                        <exclude>**</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>

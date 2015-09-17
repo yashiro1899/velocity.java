@@ -1,6 +1,6 @@
 #!/bin/bash
 
-java -Dfile.encoding=UTF-8 -jar ../target/velocity-cli-1.3.0.jar \
+java -Dfile.encoding=UTF-8 -jar ../bin/velocity-cli.jar \
 '
 {
     "velocity.java.loader.path": "'$(pwd)'",
