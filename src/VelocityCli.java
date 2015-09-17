@@ -123,7 +123,8 @@ public class VelocityCli {
             m.put("context", baseContext);
             engineMap.put(loaderPath, m);
         } else {
-            System.out.println("qqq");
+            engine = (VelocityEngine)m.get("engine");
+            baseContext = (Context)m.get("context");
         }
     }
 
