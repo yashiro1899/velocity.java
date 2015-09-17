@@ -25,7 +25,7 @@ public class VelocityCli {
     static final String VJ_LOADER_PATH = "velocity.java.loader.path";
     static final String VJ_FILENAME    = "velocity.java.filename";
 
-    private static LinkedHashMap<String, LinkedHashMap> engineMap;
+    private static LinkedHashMap<String, LinkedHashMap<String, Object>> engineMap;
     private static VelocityEngine engine;
     private static Context baseContext;
 
@@ -110,14 +110,18 @@ public class VelocityCli {
         return manager.createContext();
     }
 
-    public static void setEngine(String loaderPath) {
-        LinkedHashMap m = engineMap.get(loaderPath);
+    private static void setEngine(String loaderPath) {
+        LinkedHashMap<String, Object> m = engineMap.get(loaderPath);
 
         if (m == null) {
-            System.out.println("kkk");
-            // engine = new VelocityEngine();
-            // engine.init(createProperties());
-            // baseContext = createContext();
+            engine = new VelocityEngine();
+            engine.init(createProperties(loaderPath));
+            baseContext = createContext(loaderPath);
+
+            m = new LinkedHashMap<String, Object>();
+            m.put("engine", engine);
+            m.put("context", baseContext);
+            engineMap.put(loaderPath, m);
         } else {
             System.out.println("qqq");
         }
@@ -157,7 +161,7 @@ public class VelocityCli {
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode node = (ObjectNode)mapper.readTree(args[0]);
 
-            engineMap = new LinkedHashMap<String, LinkedHashMap>();
+            engineMap = new LinkedHashMap<String, LinkedHashMap<String, Object>>();
             if (node.has(VJ_SERVER_PORT)) {
                 int port = node.get(VJ_SERVER_PORT).numberValue().intValue();
                 HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
