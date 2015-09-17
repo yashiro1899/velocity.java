@@ -25,7 +25,7 @@ public class VelocityCli {
     static final String VJ_LOADER_PATH = "velocity.java.loader.path";
     static final String VJ_FILENAME    = "velocity.java.filename";
 
-    private static String loaderPath;
+    private static LinkedHashMap<String, LinkedHashMap> engineMap;
     private static VelocityEngine engine;
     private static Context baseContext;
 
@@ -64,7 +64,7 @@ public class VelocityCli {
         return node;
     }
 
-    private static Properties createProperties() {
+    private static Properties createProperties(String loaderPath) {
         File f = new File(loaderPath, "velocity.properties");
         Properties prop = new Properties();
 
@@ -90,7 +90,7 @@ public class VelocityCli {
         return prop;
     }
 
-    private static Context createContext() {
+    private static Context createContext(String loaderPath) {
         File f = new File(loaderPath, "tools.xml");
         ToolManager manager = new ToolManager();
 
@@ -110,12 +110,34 @@ public class VelocityCli {
         return manager.createContext();
     }
 
+    public static void setEngine(String loaderPath) {
+        LinkedHashMap m = engineMap.get(loaderPath);
+
+        if (m == null) {
+            System.out.println("kkk");
+            // engine = new VelocityEngine();
+            // engine.init(createProperties());
+            // baseContext = createContext();
+        } else {
+            System.out.println("qqq");
+        }
+    }
+
     public static String render(ObjectNode node) throws Exception {
         if (!node.has(VJ_FILENAME)) {
             throw new Exception("Must have \"" + VJ_FILENAME + "\" parameter!");
         }
         String filename = node.get(VJ_FILENAME).textValue();
         node.remove(VJ_FILENAME);
+
+        String loaderPath;
+        if (node.has(VJ_LOADER_PATH)) {
+            loaderPath = node.get(VJ_LOADER_PATH).textValue();
+            node.remove(VJ_LOADER_PATH);
+        } else {
+            loaderPath = System.getProperty("user.dir");
+        }
+        setEngine(loaderPath);
 
         Context context = new VelocityContext(baseContext);
         Iterator<String> it = node.fieldNames();
@@ -135,17 +157,7 @@ public class VelocityCli {
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode node = (ObjectNode)mapper.readTree(args[0]);
 
-            if (node.has(VJ_LOADER_PATH)) {
-                loaderPath = node.get(VJ_LOADER_PATH).textValue();
-                node.remove(VJ_LOADER_PATH);
-            } else {
-                loaderPath = System.getProperty("user.dir");
-            }
-
-            engine = new VelocityEngine();
-            engine.init(createProperties());
-            baseContext = createContext();
-
+            engineMap = new LinkedHashMap<String, LinkedHashMap>();
             if (node.has(VJ_SERVER_PORT)) {
                 int port = node.get(VJ_SERVER_PORT).numberValue().intValue();
                 HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
