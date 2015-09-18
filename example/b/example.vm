@@ -1,2 +1,2 @@
-$parse("include.vm")
+#parse("include.vm")
 I am b!
