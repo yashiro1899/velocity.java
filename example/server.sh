@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 java -Dfile.encoding=UTF-8 -jar ../bin/velocity-cli.jar \
