@@ -22,4 +22,5 @@ setInterval(function() {
     });
 
     i += 1;
+    if (i > 9) process.exit();
 }, 1000);
