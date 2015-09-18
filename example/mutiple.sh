@@ -5,7 +5,7 @@ s="ab."
 while true; do
     c=${s:i++%3:1}
     curl http://localhost:12306/ \
-         -i \
+         -si \
          -X POST \
          --data $'{
              "velocity.java.loader.path": "'$c'",
