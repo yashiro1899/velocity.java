@@ -60,8 +60,8 @@ So, `velocity.java` provides one simple server to speed up rendering.
 
 ```javascript
 var velocity = require("velocity.java");
-velocity.startServer(8000, "example/");
-velocity.render("example.vm", {}, function(err, data) {
+velocity.startServer(8000);
+velocity.render("example.vm", {}, "example/", function(err, data) {
     if (err) {
         console.error(err);
         return;
