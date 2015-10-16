@@ -25,40 +25,40 @@ public class VelocityCli {
     static final String VJ_LOADER_PATH = "velocity.java.loader.path";
     static final String VJ_FILENAME    = "velocity.java.filename";
 
-    private static LinkedHashMap<String, LinkedHashMap<String, Object>> engineMap;
+    private static LinkedHashMap<String, LinkedHashMap<String, Object> > engineMap;
     private static VelocityEngine engine;
     private static Context baseContext;
 
     private static Object convert(JsonNode node) {
         switch (node.getNodeType()) {
-            case ARRAY:
-                ArrayList<Object> a = new ArrayList<Object>();
-                Iterator<JsonNode> ita = node.elements();
+        case ARRAY:
+            ArrayList<Object> a = new ArrayList<Object>();
+            Iterator<JsonNode> ita = node.elements();
 
-                for (; ita.hasNext(); ) a.add(convert(ita.next()));
-                return a;
+            for (; ita.hasNext(); ) a.add(convert(ita.next()));
+            return a;
 
-            case BOOLEAN:
-                return node.booleanValue();
+        case BOOLEAN:
+            return node.booleanValue();
 
-            case OBJECT:
-                LinkedHashMap<String, Object> o = new LinkedHashMap<String, Object>();
-                Iterator<String> ito = node.fieldNames();
+        case OBJECT:
+            LinkedHashMap<String, Object> o = new LinkedHashMap<String, Object>();
+            Iterator<String> ito = node.fieldNames();
 
-                for (; ito.hasNext(); ) {
-                    String field = (String)ito.next();
-                    o.put(field, convert(node.get(field)));
-                }
-                return o;
+            for (; ito.hasNext(); ) {
+                String field = (String)ito.next();
+                o.put(field, convert(node.get(field)));
+            }
+            return o;
 
-            case NULL:
-                return null;
+        case NULL:
+            return null;
 
-            case NUMBER:
-                return node.numberValue();
+        case NUMBER:
+            return node.numberValue();
 
-            case STRING:
-                return node.textValue();
+        case STRING:
+            return node.textValue();
         }
 
         return node;
@@ -80,7 +80,7 @@ public class VelocityCli {
             prop.setProperty("input.encoding", "UTF-8");
             prop.setProperty("output.encoding", "UTF-8");
             prop.setProperty("runtime.log.logsystem.class",
-                    "org.apache.velocity.runtime.log.NullLogChute");
+                             "org.apache.velocity.runtime.log.NullLogChute");
             prop.setProperty("file.resource.loader.cache", "true");
             prop.setProperty("file.resource.loader.modificationCheckInterval", "2");
             prop.setProperty("resource.manager.defaultcache.size", "0");
@@ -162,7 +162,7 @@ public class VelocityCli {
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode node = (ObjectNode)mapper.readTree(args[0]);
 
-            engineMap = new LinkedHashMap<String, LinkedHashMap<String, Object>>();
+            engineMap = new LinkedHashMap<String, LinkedHashMap<String, Object> >();
             if (node.has(VJ_SERVER_PORT)) {
                 int port = node.get(VJ_SERVER_PORT).numberValue().intValue();
                 HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
@@ -174,13 +174,13 @@ public class VelocityCli {
             System.out.println(render(node));
         } else {
             System.err.println(
-                    "Usage: java -jar velocity-cli.jar \\\n" +
-                    "'\n{\n" +
-                    "    \"velocity.java.loader.path\": \"/path/to/root\"\n" +
-                    "    \"velocity.java.filename\": \"filename\"\n" +
-                    "    \"data1\": \"...\"\n" +
-                    "    \"data2\": \"...\"\n" +
-                    "}'");
+                "Usage: java -jar velocity-cli.jar \\\n" +
+                "'\n{\n" +
+                "    \"velocity.java.loader.path\": \"/path/to/root\"\n" +
+                "    \"velocity.java.filename\": \"filename\"\n" +
+                "    \"data1\": \"...\"\n" +
+                "    \"data2\": \"...\"\n" +
+                "}'");
         }
     }
 }
