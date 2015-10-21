@@ -1,6 +1,6 @@
 'use strict';
 
-var velocity = require("../");
+const velocity = require("../");
 
 var roots = ["example/a", "example/b", "example"];
 var cb = function () {
