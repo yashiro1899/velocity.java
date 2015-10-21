@@ -17,8 +17,8 @@ function run(root, cb) {
         if (err) {
             console.error(err);
         } else {
-            console.log("%s[spent %d ms]", data.toString(), end);
-            console.log("[root is '%s']\n--\n", root);
+            console.log("%s\x1b[31m[spent %d ms]", data.toString(), end);
+            console.log("[root is '%s']\x1b[0m\n--\n", root);
         }
         cb(err);
     });

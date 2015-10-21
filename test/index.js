@@ -27,8 +27,8 @@ function run(a, cb) {
         if (err) {
             console.error(err);
         } else {
-            console.log("%s[spent %d ms]", data.toString(), end);
-            console.log("[velocity.renderOnce(%s)]\n\n--\n", message);
+            console.log("%s\x1b[31m[spent %d ms]", data.toString(), end);
+            console.log("[velocity.renderOnce(%s)]\x1b[0m\n--\n", message);
         }
         cb(err);
     });
