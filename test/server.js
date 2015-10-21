@@ -1,68 +1,51 @@
-var velocity = require("../");
-velocity.startServer();
+'use strict';
 
-setTimeout(function() {
-    var start = process.hrtime();
-    velocity.render("example.vm", {
+const velocity = require("../");
+
+var args = [
+    ["example.vm", {
         list: ["str", 43, null, true, false, {}, [], "中国"]
-    }, 'example', function(err, data) {
+    }, "example/", "filename, data, root, callback"],
+    ["example/example.vm", {
+        list: ["str", 43, null, true, false, {}, [], "中国"]
+    }, "filename, data, callback"],
+    ["example.vm", "example/", "filename, root, callback"],
+    ["example/example.vm", "filename, callback"]
+];
+var cb = function () {
+    process.exit();
+};
+
+function run(a, cb) {
+    var start = process.hrtime();
+    var message = a.pop();
+
+    a.push(function (err, data) {
         var end = process.hrtime(start);
         end = Math.round(end[0] * 1000 + end[1] / 1e6);
 
         if (err) {
             console.error(err);
-            return;
+        } else {
+            console.log("%s[spent %d ms]", data.toString(), end);
+            console.log("[velocity.renderOnce(%s)]\n\n--\n", message);
         }
-        console.log("%s[spent %d ms]", data.toString(), end);
-        console.log("[velocity.render(filename, data, root, callback)]\n\n--\n");
+        cb(err);
     });
-}, 2000);
+    velocity.render.apply(null, a);
+}
 
-setTimeout(function() {
-var start = process.hrtime();
-velocity.render("example/example.vm", {
-    list: ["str", 43, null, true, false, {}, [], "中国"]
-}, function(err, data) {
-    var end = process.hrtime(start);
-    end = Math.round(end[0] * 1000 + end[1] / 1e6);
+velocity.startServer();
+args.reverse()
+    .forEach(function (a) {
+        cb = (function (cbb) {
+            return function (err) {
+                if (err) {
+                    return cbb(err);
+                }
+                run(a, cbb);
+            };
+        }(cb));
+    });
 
-    if (err) {
-        console.error(err);
-        return;
-    }
-    console.log("%s[spent %d ms]", data.toString(), end);
-    console.log("[velocity.render(filename, data, callback)]\n\n--\n");
-});
-}, 3000);
-
-setTimeout(function() {
-var start = process.hrtime();
-velocity.render("example.vm", "example", function(err, data) {
-    var end = process.hrtime(start);
-    end = Math.round(end[0] * 1000 + end[1] / 1e6);
-
-    if (err) {
-        console.error(err);
-        return;
-    }
-    console.log("%s[spent %d ms]", data.toString(), end);
-    console.log("[velocity.render(filename, root, callback)]\n\n--\n");
-});
-}, 4000);
-
-setTimeout(function() {
-var start = process.hrtime();
-velocity.render("example/example.vm", {
-}, function(err, data) {
-    var end = process.hrtime(start);
-    end = Math.round(end[0] * 1000 + end[1] / 1e6);
-
-    if (err) {
-        console.error(err);
-        return;
-    }
-    console.log("%s[spent %d ms]", data.toString(), end);
-    console.log("[velocity.render(filename, callback)]\n\n--\n");
-    velocity.stopServer();
-});
-}, 5000);
+cb();
